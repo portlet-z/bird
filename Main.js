@@ -9,7 +9,7 @@ import {Score} from "./js/player/Score.js";
 
 export class Main {
   constructor() {
-    this.canvas = document.getElementById("game_canvas")
+    this.canvas = wx.createCanvas()
     this.ctx = this.canvas.getContext('2d')
     this.dataStore = DataStore.getInstance()
     this.director = Director.getInstance()
@@ -17,9 +17,19 @@ export class Main {
     loader.onLoaded(map => this.onResourceFirstLoaded(map))
   }
 
+  //创建背景音乐
+  createBackgroundMusic() {
+    const bgm = wx.createInnerAudioContext()
+    bgm.autoplay = true
+    bgm.loop = true
+    bgm.src = 'audios/bgm.mp3'
+  }
+
   onResourceFirstLoaded(map) {
+    this.dataStore.canvas = this.canvas
     this.dataStore.ctx = this.ctx
     this.dataStore.res = map
+    //this.createBackgroundMusic()
     this.init()
   }
 
@@ -39,10 +49,17 @@ export class Main {
   }
 
   registerEvent() {
-    this.canvas.addEventListener('touchstart', e => {
-      //屏蔽 JS 的事件冒泡
-      e.preventDefault()
-      if(this.director.isGameOver) {
+    // this.canvas.addEventListener('touchstart', e => {
+    //   //屏蔽 JS 的事件冒泡
+    //   e.preventDefault()
+    //   if(this.director.isGameOver) {
+    //     this.init()
+    //   } else {
+    //     this.director.birdsEvent()
+    //   }
+    // })
+    wx.onTouchStart(() => {
+      if (this.director.isGameOver) {
         this.init()
       } else {
         this.director.birdsEvent()
