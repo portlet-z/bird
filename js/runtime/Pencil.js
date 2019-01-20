@@ -12,7 +12,7 @@ export class Pencil extends Sprite{
   }
 
   draw() {
-    this.x = this.x - Director.getInstance().landSpeed
+    this.x = this.x - Director.getInstance().moveSpeed
     super.draw(this.img, 0, 0, this.width, this.height, this.x, this.y, this.width, this.height)
   }
 }
